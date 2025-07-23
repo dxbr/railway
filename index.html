@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway Reservation System - Login</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #667eea;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 100px);
+            padding: 2rem 0;
+        }
+
+        .login-card {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #666;
+        }
+
+        /* Dashboard/Pages Common Styles */
+        .page-header {
+            text-align: center;
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Page visibility */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .navbar {
+                position: relative;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Hidden class for dynamic content */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Train selection styles */
+        .train-option {
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .train-option:hover {
+            border-color: #667eea;
+        }
+
+        .train-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .train-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .train-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .train-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .train-price {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">RailReserve</a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" onclick="showPage('login')" class="active">Login</a></li>
+                    <li><a href="#" onclick="showPage('booking')">Book Ticket</a></li>
+                    <li><a href="#" onclick="showPage('dashboard')">Dashboard</a></li>
+                    <li><a href="#" onclick="showPage('cancellation')">Cancel Ticket</a></li>
+                </ul>
+                <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login" class="page active">
+            <div class="login-container">
+                <div class="card login-card">
+                    <div class="login-header">
+                        <h1>Welcome Back</h1>
+                        <p>Please sign in to your account</p>
+                    </div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email or Username</label>
+                            <input type="text" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn">Sign In</button>
+                    </form>
+                    <div id="loginAlert"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Booking Page -->
+        <div id="booking" class="page">
+            <div class="page-header">
+                <h1>Book Your Journey</h1>
+                <p>Find and book train tickets for your next adventure</p>
+            </div>
+
+            <div class="card">
+                <h2>Search Trains</h2>
+                <form id="searchForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fromStation">From Station</label>
+                            <select id="fromStation" class="form-control" required>
+                                <option value="">Select Station</option>
+                                <option value="mumbai">Mumbai Central</option>
+                                <option value="delhi">New Delhi</option>
+                                <option value="bangalore">Bangalore City</option>
+                                <option value="chennai">Chennai Central</option>
+                                <option value="kolkata">Howrah Junction</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="toStation">To Station</label>
+                            <select id="toStation" class="form-control" required>
+                                <option value="">Select Station</option>
+                                <option value="mumbai">Mumbai Central</option>
+                                <option value="delhi">New Delhi</option>
+                                <option value="bangalore">Bangalore City</option>
+                                <option value="chennai">Chennai Central</option>
+                                <option value="kolkata">Howrah Junction</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="travelDate">Travel Date</label>
+                            <input type="date" id="travelDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passengers">Passengers</label>
+                            <select id="passengers" class="form-control" required>
+                                <option value="1">1 Passenger</option>
+                                <option value="2">2 Passengers</option>
+                                <option value="3">3 Passengers</option>
+                                <option value="4">4 Passengers</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Search Trains</button>
+                </form>
+            </div>
+
+            <div id="trainResults" class="card hidden">
+                <h2>Available Trains</h2>
+                <div id="trainList"></div>
+                <button id="proceedBooking" class="btn hidden">Proceed to Booking</button>
+            </div>
+
+            <div id="passengerForm" class="card hidden">
+                <h2>Passenger Details</h2>
+                <form id="bookingForm">
+                    <div id="passengerFields"></div>
+                    <div class="form-group">
+                        <label for="contactEmail">Contact Email</label>
+                        <input type="email" id="contactEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Contact Phone</label>
+                        <input type="tel" id="contactPhone" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn">Book Ticket</button>
+                </form>
+            </div>
+
+            <div id="bookingAlert"></div>
+        </div>
+
+        <!-- Dashboard/User Count Page -->
+        <div id="dashboard" class="page">
+            <div class="page-header">
+                <h1>System Dashboard</h1>
+                <p>Overview of railway reservation system statistics</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalUsers">1,247</span>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalTickets">3,891</span>
+                    <div class="stat-label">Tickets Booked</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalTrains">45</span>
+                    <div class="stat-label">Available Trains</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalStations">128</span>
+                    <div class="stat-label">Railway Stations</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="todayBookings">89</span>
+                    <div class="stat-label">Today's Bookings</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="cancelledTickets">156</span>
+                    <div class="stat-label">Cancelled Tickets</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>System Entities Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>👥 Passengers</h3>
+                        <p>Registered passengers in the system with verified accounts and travel history.</p>
+                        <span class="stat-number">2,834</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🎫 Tickets</h3>
+                        <p>Active and historical ticket records including bookings, cancellations, and refunds.</p>
+                        <span class="stat-number">4,567</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🚂 Trains</h3>
+                        <p>Operating trains with schedules, routes, and real-time availability information.</p>
+                        <span class="stat-number">67</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🚉 Routes</h3>
+                        <p>Established railway routes connecting major cities and towns across the network.</p>
+                        <span class="stat-number">189</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Cancellation Page -->
+        <div id="cancellation" class="page">
+            <div class="page-header">
+                <h1>Cancel Ticket</h1>
+                <p>Cancel your booking and process refund</p>
+            </div>
+
+            <div class="card">
+                <h2>Ticket Cancellation</h2>
+                <form id="cancellationSearchForm">
+                    <div class="form-group">
+                        <label for="ticketNumber">Ticket Number (PNR)</label>
+                        <input type="text" id="ticketNumber" class="form-control" placeholder="Enter 10-digit PNR number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailVerification">Email Verification</label>
+                        <input type="email" id="emailVerification" class="form-control" placeholder="Enter registered email" required>
+                    </div>
+                    <button type="submit" class="btn">Find Ticket</button>
+                </form>
+            </div>
+
+            <div id="ticketDetails" class="card hidden">
+                <h2>Ticket Details</h2>
+                <div id="ticketInfo"></div>
+                <button id="cancelTicket" class="btn btn-secondary">Cancel This Ticket</button>
+            </div>
+
+            <div id="cancellationAlert"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+    <script>
+        // Dummy data for demonstration
+        const dummyData = {
+            users: [
+                { id: 1, email: 'user@example.com', password: 'password123' },
+                { id: 2, email: 'admin@railreserve.com', password: 'admin123' }
+            ],
+            trains: [
+                {
+                    id: 'RJ2401',
+                    name: 'Rajdhani Express',
+                    from: 'delhi',
+                    to: 'mumbai',
+                    departure: '16:55',
+                    arrival: '08:35',
+                    duration: '15h 40m',
+                    price: 2450
+                },
+                {
+                    id: 'SF2102',
+                    name: 'Shatabdi Express',
+                    from: 'delhi',
+                    to: 'bangalore',
+                    departure: '06:00',
+                    arrival: '21:30',
+                    duration: '15h 30m',
+                    price: 1890
+                },
+                {
+                    id: 'GT2356',
+                    name: 'Grand Trunk Express',
+                    from: 'chennai',
+                    to: 'delhi',
+                    departure: '19:15',
+                    arrival: '22:00',
+                    duration: '26h 45m',
+                    price: 1650
+                }
+            ],
+            tickets: [],
+            currentUser: null,
+            selectedTrain: null
+        };
+
+        // Utility Functions
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation active state
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('show');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('show');
+        }
+
+        function showAlert(containerId, message, type = 'success') {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        function generatePNR() {
+            return Math.random().toString().substr(2, 10);
+        }
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulate login validation
+            const user = dummyData.users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                dummyData.currentUser = user;
+                showAlert('loginAlert', 'Login successful! Welcome back.', 'success');
+                setTimeout(() => {
+                    showPage('booking');
+                }, 1500);
+            } else {
+                showAlert('loginAlert', 'Invalid credentials. Try user@example.com / password123', 'error');
+            }
+        });
+
+        // Train search functionality
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fromStation = document.getElementById('fromStation').value;
+            const toStation = document.getElementById('toStation').value;
+            const travelDate = document.getElementById('travelDate').value;
+            const passengers = document.getElementById('passengers').value;
+            
+            if (fromStation === toStation) {
+                showAlert('bookingAlert', 'Source and destination cannot be the same!', 'error');
+                return;
+            }
+            
+            // Filter trains based on route
+            const availableTrains = dummyData.trains.filter(train => 
+                train.from === fromStation && train.to === toStation
+            );
+            
+            const trainResults = document.getElementById('trainResults');
+            const trainList = document.getElementById('trainList');
+            
+            if (availableTrains.length === 0) {
+                trainList.innerHTML = '<p>No trains available for this route. Please try a different route.</p>';
+            } else {
+                trainList.innerHTML = availableTrains.map(train => `
+                    <div class="train-option" onclick="selectTrain('${train.id}')">
+                        <div class="train-info">
+                            <div>
+                                <div class="train-name">${train.name} (${train.id})</div>
+                                <div class="train-details">${train.departure} → ${train.arrival} | ${train.duration}</div>
+                            </div>
+                            <div class="train-price">₹${train.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            trainResults.classList.remove('hidden');
+        });
+
+        function selectTrain(trainId) {
+            // Remove previous selection
+            document.querySelectorAll('.train-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked train
+            event.target.closest('.train-option').classList.add('selected');
+            
+            dummyData.selectedTrain = dummyData.trains.find(train => train.id === trainId);
+            document.getElementById('proceedBooking').classList.remove('hidden');
+        }
+
+        document.getElementById('proceedBooking').addEventListener('click', function() {
+            const passengers = parseInt(document.getElementById('passengers').value);
+            const passengerForm = document.getElementById('passengerForm');
+            const passengerFields = document.getElementById('passengerFields');
+            
+            // Generate passenger input fields
+            let fieldsHTML = '';
+            for (let i = 1; i <= passengers; i++) {
+                fieldsHTML += `
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="passenger${i}Name">Passenger ${i} Name</label>
+                            <input type="text" id="passenger${i}Name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passenger${i}Age">Age</label>
+                            <input type="number" id="passenger${i}Age" class="form-control" min="1" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passenger${i}Gender">Gender</label>
+                            <select id="passenger${i}Gender" class="form-control" required>
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            passengerFields.innerHTML = fieldsHTML;
+            passengerForm.classList.remove('hidden');
+            passengerForm.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Booking form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!dummyData.selectedTrain) {
+                showAlert('bookingAlert', 'Please select a train first!', 'error');
+                return;
+            }
+            
+            const passengers = parseInt(document.getElementById('passengers').value);
+            const pnr = generatePNR();
+            
+            // Create ticket object
+            const ticket = {
+                pnr: pnr,
+                train: dummyData.selectedTrain,
+                passengers: passengers,
+                from: document.getElementById('fromStation').options[document.getElementById('fromStation').selectedIndex].text,
+                to: document.getElementById('toStation').options[document.getElementById('toStation').selectedIndex].text,
+                date: document.getElementById('travelDate').value,
+                email: document.getElementById('contactEmail').value,
+                phone: document.getElementById('contactPhone').value,
+                totalAmount: dummyData.selectedTrain.price * passengers,
+                status: 'confirmed',
+                bookingDate: new Date().toISOString().split('T')[0]
+            };
+            
+            dummyData.tickets.push(ticket);
+            
+            showAlert('bookingAlert', `Ticket booked successfully! Your PNR is: ${pnr}. Total Amount: ₹${ticket.totalAmount}`, 'success');
+            
+            // Reset form
+            document.getElementById('bookingForm').reset();
+            document.getElementById('searchForm').reset();
+            document.getElementById('trainResults').classList.add('hidden');
+            document.getElementById('passengerForm').classList.add('hidden');
+            
+            // Update dashboard statistics
+            updateDashboardStats();
+        });
+
+        // Ticket cancellation functionality
+        document.getElementById('cancellationSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const ticketNumber = document.getElementById('ticketNumber').value;
+            const email = document.getElementById('emailVerification').value;
+            
+            // Find ticket in dummy data
+            const ticket = dummyData.tickets.find(t => 
+                t.pnr === ticketNumber && t.email === email && t.status === 'confirmed'
+            );
+            
+            if (ticket) {
+                displayTicketDetails(ticket);
+            } else {
+                showAlert('cancellationAlert', 'No active ticket found with this PNR and email combination.', 'error');
+            }
+        });
+
+        function displayTicketDetails(ticket) {
+            const ticketDetails = document.getElementById('ticketDetails');
+            const ticketInfo = document.getElementById('ticketInfo');
+            
+            ticketInfo.innerHTML = `
+                <div class="form-grid">
+                    <div><strong>PNR:</strong> ${ticket.pnr}</div>
+                    <div><strong>Train:</strong> ${ticket.train.name}</div>
+                    <div><strong>Route:</strong> ${ticket.from} → ${ticket.to}</div>
+                    <div><strong>Date:</strong> ${ticket.date}</div>
+                    <div><strong>Passengers:</strong> ${ticket.passengers}</div>
+                    <div><strong>Amount:</strong> ₹${ticket.totalAmount}</div>
+                </div>
+            `;
+            
+            ticketDetails.classList.remove('hidden');
+            ticketDetails.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('cancelTicket').addEventListener('click', function() {
+            const ticketNumber = document.getElementById('ticketNumber').value;
+            
+            // Find and cancel ticket
+            const ticketIndex = dummyData.tickets.findIndex(t => t.pnr === ticketNumber);
+            if (ticketIndex !== -1) {
+                dummyData.tickets[ticketIndex].status = 'cancelled';
+                
+                showAlert('cancellationAlert', 'Ticket cancelled successfully! Refund will be processed within 5-7 working days.', 'success');
+                
+                // Hide ticket details
+                document.getElementById('ticketDetails').classList.add('hidden');
+                document.getElementById('cancellationSearchForm').reset();
+                
+                // Update dashboard statistics
+                updateDashboardStats();
+            }
+        });
+
+        // Dashboard statistics update
+        function updateDashboardStats() {
+            const confirmedTickets = dummyData.tickets.filter(t => t.status === 'confirmed');
+            const cancelledTickets = dummyData.tickets.filter(t => t.status === 'cancelled');
+            const today = new Date().toISOString().split('T')[0];
+            const todayBookings = dummyData.tickets.filter(t => t.bookingDate === today);
+            
+            document.getElementById('totalTickets').textContent = confirmedTickets.length + 3891;
+            document.getElementById('cancelledTickets').textContent = cancelledTickets.length + 156;
+            document.getElementById('todayBookings').textContent = todayBookings.length + 89;
+        }
+
+        // Set minimum date to today for travel date input
+        function setMinDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('travelDate').setAttribute('min', today);
+        }
+
+        // Initialize the application
+        function initializeApp() {
+            setMinDate();
+            updateDashboardStats();
+            
+            // Add some sample tickets for demonstration
+            dummyData.tickets.push(
+                {
+                    pnr: '1234567890',
+                    train: dummyData.trains[0],
+                    passengers: 2,
+                    from: 'New Delhi',
+                    to: 'Mumbai Central',
+                    date: '2025-07-25',
+                    email: 'user@example.com',
+                    phone: '+91-9876543210',
+                    totalAmount: 4900,
+                    status: 'confirmed',
+                    bookingDate: '2025-07-23'
+                },
+                {
+                    pnr: '0987654321',
+                    train: dummyData.trains[1],
+                    passengers: 1,
+                    from: 'New Delhi',
+                    to: 'Bangalore City',
+                    date: '2025-07-24',
+                    email: 'admin@railreserve.com',
+                    phone: '+91-9876543211',
+                    totalAmount: 1890,
+                    status: 'confirmed',
+                    bookingDate: '2025-07-23'
+                }
+            );
+        }
+
+        // Form validation helpers
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePhone(phone) {
+            const re = /^[\+]?[1-9][\d]{0,15}$/;
+            return re.test(phone);
+        }
+
+        // Enhanced form validation
+        document.getElementById('contactEmail').addEventListener('blur', function() {
+            if (!validateEmail(this.value)) {
+                this.style.borderColor = '#f44336';
+                showAlert('bookingAlert', 'Please enter a valid email address.', 'error');
+            } else {
+                this.style.borderColor = '#4caf50';
+            }
+        });
+
+        document.getElementById('contactPhone').addEventListener('blur', function() {
+            if (!validatePhone(this.value)) {
+                this.style.borderColor = '#f44336';
+                showAlert('bookingAlert', 'Please enter a valid phone number.', 'error');
+            } else {
+                this.style.borderColor = '#4caf50';
+            }
+        });
+
+        // Auto-generate more realistic dummy data
+        function generateMoreTrains() {
+            const stations = {
+                'mumbai': 'Mumbai Central',
+                'delhi': 'New Delhi',
+                'bangalore': 'Bangalore City',
+                'chennai': 'Chennai Central',
+                'kolkata': 'Howrah Junction'
+            };
+
+            const trainNames = [
+                'Rajdhani Express', 'Shatabdi Express', 'Duronto Express',
+                'Garib Rath', 'Jan Shatabdi', 'Intercity Express',
+                'Superfast Express', 'Mail Express', 'Passenger Train'
+            ];
+
+            const routes = [
+                { from: 'mumbai', to: 'delhi', duration: '15h 40m', basePrice: 2450 },
+                { from: 'delhi', to: 'mumbai', duration: '15h 45m', basePrice: 2400 },
+                { from: 'bangalore', to: 'chennai', duration: '5h 30m', basePrice: 850 },
+                { from: 'chennai', to: 'bangalore', duration: '5h 45m', basePrice: 820 },
+                { from: 'kolkata', to: 'delhi', duration: '17h 20m', basePrice: 1950 },
+                { from: 'delhi', to: 'kolkata', duration: '17h 30m', basePrice: 1920 },
+                { from: 'mumbai', to: 'bangalore', duration: '11h 15m', basePrice: 1680 },
+                { from: 'bangalore', to: 'mumbai', duration: '11h 30m', basePrice: 1650 }
+            ];
+
+            // Generate additional trains for better search results
+            routes.forEach((route, index) => {
+                const trainId = `TR${2500 + index}`;
+                const randomName = trainNames[Math.floor(Math.random() * trainNames.length)];
+                const departureHour = Math.floor(Math.random() * 24);
+                const departureMin = Math.floor(Math.random() * 60);
+                const departure = `${departureHour.toString().padStart(2, '0')}:${departureMin.toString().padStart(2, '0')}`;
+                
+                // Calculate arrival time
+                const durationHours = parseInt(route.duration.split('h')[0]);
+                const arrivalHour = (departureHour + durationHours) % 24;
+                const arrival = `${arrivalHour.toString().padStart(2, '0')}:${departureMin.toString().padStart(2, '0')}`;
+                
+                dummyData.trains.push({
+                    id: trainId,
+                    name: randomName,
+                    from: route.from,
+                    to: route.to,
+                    departure: departure,
+                    arrival: arrival,
+                    duration: route.duration,
+                    price: route.basePrice + Math.floor(Math.random() * 500)
+                });
+            });
+        }
+
+        // Real-time clock for dashboard
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            const dateString = now.toLocaleDateString();
+            
+            // You can add a clock element to the dashboard if needed
+            // document.getElementById('currentTime').textContent = `${dateString} ${timeString}`;
+        }
+
+        // Smooth scrolling for better UX
+        function smoothScrollTo(elementId) {
+            document.getElementById(elementId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Enhanced mobile menu with animation
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            navLinks.classList.toggle('show');
+            
+            // Animate hamburger menu icon
+            if (navLinks.classList.contains('show')) {
+                mobileMenu.innerHTML = '✕';
+            } else {
+                mobileMenu.innerHTML = '☰';
+            }
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navbar = document.querySelector('.navbar');
+            
+            if (!navbar.contains(event.target) && navLinks.classList.contains('show')) {
+                navLinks.classList.remove('show');
+                mobileMenu.innerHTML = '☰';
+            }
+        });
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', function(event) {
+            // Escape key closes mobile menu
+            if (event.key === 'Escape') {
+                const navLinks = document.getElementById('navLinks');
+                const mobileMenu = document.querySelector('.mobile-menu');
+                if (navLinks.classList.contains('show')) {
+                    navLinks.classList.remove('show');
+                    mobileMenu.innerHTML = '☰';
+                }
+            }
+        });
+
+        // Page transition effects
+        function showPage(pageId) {
+            const currentPage = document.querySelector('.page.active');
+            const targetPage = document.getElementById(pageId);
+            
+            // Fade out current page
+            if (currentPage) {
+                currentPage.style.opacity = '0';
+                setTimeout(() => {
+                    currentPage.classList.remove('active');
+                    currentPage.style.opacity = '1';
+                    
+                    // Fade in target page
+                    targetPage.classList.add('active');
+                    targetPage.style.opacity = '0';
+                    setTimeout(() => {
+                        targetPage.style.opacity = '1';
+                    }, 50);
+                }, 150);
+            } else {
+                targetPage.classList.add('active');
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('show');
+            document.querySelector('.mobile-menu').innerHTML = '☰';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            generateMoreTrains();
+            
+            // Update clock every second
+            setInterval(updateClock, 1000);
+            updateClock();
+            
+            // Add loading animation for train search (simulate API call)
+            const searchForm = document.getElementById('searchForm');
+            const originalSubmitHandler = searchForm.onsubmit;
+            
+            searchForm.addEventListener('submit', function(e) {
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                
+                submitButton.textContent = 'Searching...';
+                submitButton.disabled = true;
+                
+                // Simulate API delay
+                setTimeout(() => {
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                }, 1000);
+            });
+        });
+
+        // Export functions for potential backend integration
+        window.RailReserveAPI = {
+            // Authentication
+            login: function(email, password) {
+                // TODO: Integrate with backend authentication API
+                return new Promise((resolve, reject) => {
+                    const user = dummyData.users.find(u => u.email === email && u.password === password);
+                    if (user) {
+                        resolve({ success: true, user: user });
+                    } else {
+                        reject({ success: false, message: 'Invalid credentials' });
+                    }
+                });
+            },
+            
+            // Train search
+            searchTrains: function(from, to, date) {
+                // TODO: Integrate with backend train search API
+                return new Promise((resolve) => {
+                    const trains = dummyData.trains.filter(train => 
+                        train.from === from && train.to === to
+                    );
+                    resolve({ success: true, trains: trains });
+                });
+            },
+            
+            // Ticket booking
+            bookTicket: function(ticketData) {
+                // TODO: Integrate with backend booking API
+                return new Promise((resolve) => {
+                    const pnr = generatePNR();
+                    const ticket = { ...ticketData, pnr: pnr, status: 'confirmed' };
+                    dummyData.tickets.push(ticket);
+                    resolve({ success: true, ticket: ticket });
+                });
+            },
+            
+            // Ticket cancellation
+            cancelTicket: function(pnr, email) {
+                // TODO: Integrate with backend cancellation API
+                return new Promise((resolve, reject) => {
+                    const ticketIndex = dummyData.tickets.findIndex(t => 
+                        t.pnr === pnr && t.email === email && t.status === 'confirmed'
+                    );
+                    
+                    if (ticketIndex !== -1) {
+                        dummyData.tickets[ticketIndex].status = 'cancelled';
+                        resolve({ success: true, message: 'Ticket cancelled successfully' });
+                    } else {
+                        reject({ success: false, message: 'Ticket not found' });
+                    }
+                });
+            }
+        };
+
+        // Service Worker registration for offline functionality (future enhancement)
+        if ('serviceWorker' in navigator) {
+            // TODO: Register service worker for offline capabilities
+            // navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>
